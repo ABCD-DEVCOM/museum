@@ -1,8 +1,8 @@
 <?php
 /*
  * Script: Museum Module Dashboard
- * Author: ABCD Community
- * Requires: PHP 8.1+
+ * Author: Roger Craveiro Guilherme
+ * Description: This script serves as the main dashboard for the Museum module, providing access to cataloging, inventory management, and administrative functions.
  */
 
 session_start();

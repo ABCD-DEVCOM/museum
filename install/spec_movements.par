@@ -1,0 +1,3 @@
+spec_movements.*=%path_database%spec_movements/data/spec_movements.*
+prologoact.pft=%path_database%www/prologoact.pft
+epilogoact.pft=%path_database%www/epilogoact.pft

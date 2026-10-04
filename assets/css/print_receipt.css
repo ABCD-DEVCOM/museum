@@ -1,0 +1,62 @@
+/* Museum Plugin - mPDF Receipt Styles based on ABCD Palette */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* BODY_BACKGROUND */
+    color: #333333;
+    font-size: 11pt;
+}
+
+h1, h2, h3, h4 {
+    color: #1a365d; /* HEADING */
+    margin-bottom: 10px;
+}
+
+/* Títulos principais no topo */
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    border-bottom: 2px solid #2c5282; /* SECTIONINFO */
+    padding-bottom: 5px;
+    font-size: 18pt;
+}
+
+h3 {
+    color: #2c5282; /* SECTIONINFO */
+    border-bottom: 1px solid #f1f5f9; /* TOOLBAR */
+    padding-bottom: 3px;
+}
+
+/* Links se existirem */
+a {
+    color: #2b5c8f; /* COLOR_LINK */
+    text-decoration: none;
+}
+
+/* Tabelas de Dados (Substitui as bordas inline do PFT) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table td, table th {
+    padding: 8px;
+    border-bottom: 1px solid #f1f5f9; /* TOOLBAR */
+    vertical-align: top;
+}
+
+table td strong {
+    color: #1a365d; /* HEADING */
+}
+
+/* Área de Termos Legais */
+p {
+    background-color: #f1f5f9; /* HELPER */
+    color: #4a5568; /* HELPER_FONTCOLOR */
+    border-left: 4px solid #2c5282; /* SECTIONINFO */
+    padding: 12px;
+    text-align: justify;
+    font-size: 10pt;
+    border-radius: 0 4px 4px 0;
+}

@@ -2,7 +2,9 @@
 /*
  * Script: Museum Module Browser
  * Description: Refactored native browse.php with restored Search Engine and robust State Management.
+ * Author: Roger Craveiro Guilherme
  */
+
 error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 
@@ -24,6 +26,12 @@ include("{$central_path}lang/dbadmin.php");
 include("{$central_path}lang/admin.php");
 include("{$central_path}lang/prestamo.php");
 include("{$central_path}lang/profile.php");
+
+// Carrega configurações de termos padrão do Museu
+$config_file = $db_path . "par/museum.def";
+$museum_config = file_exists($config_file) ? parse_ini_file($config_file) : [];
+$term_entry = $museum_config['DEFAULT_TERM_ENTRY'] ?? '';
+$term_exit  = $museum_config['DEFAULT_TERM_EXIT'] ?? '';
 
 $ABCD_permission = $_SESSION["permiso"];
 $ABCD_base = $arrHttp['base'];
@@ -516,21 +524,55 @@ function generate_table($contenido, $first_post, $last_post, $show, $total_lines
     }
 
     // Função Vigia: Procura o botão de cabeçalho do ABCD a cada 100ms e força o sumiço dele
+    // Termos carregados via PHP do museum.def
+    var defaultTermEntry = <?php echo json_encode(str_replace("\\n", "\n", $term_entry)); ?>;
+    var defaultTermExit = <?php echo json_encode(str_replace("\\n", "\n", $term_exit)); ?>;
+    var isMuseumConfigInjected = false;
+
+    // Função Vigia: Limpa a interface do ABCD e preenche dados automáticos
     function iniciarOcultacaoIframe() {
         if (window.iframeVigia) clearInterval(window.iframeVigia);
+        isMuseumConfigInjected = false; // Reseta sempre que abrir o modal
 
         window.iframeVigia = setInterval(function() {
             try {
                 var iframeDoc = document.getElementById('modalIframe').contentWindow.document;
                 if (iframeDoc && iframeDoc.body) {
+
+                    // 1. Oculta botões superiores do ABCD
                     var botoes = iframeDoc.querySelectorAll('.button_browse.show');
                     for (var i = 0; i < botoes.length; i++) {
                         botoes[i].style.display = 'none';
                         botoes[i].style.visibility = 'hidden';
                     }
+
+                    // 2. Autopreenchimento de Termos de Responsabilidade
+                    if (!isMuseumConfigInjected) {
+                        // Na base spec_receipts, os termos ficam na tag70 e o tipo na tag10
+                        var typeInput = iframeDoc.querySelector('input[name="tag10"], select[name="tag10"]');
+                        var termsArea = iframeDoc.querySelector('textarea[name="tag70"], input[name="tag70"]');
+
+                        if (termsArea && termsArea.value.trim() === '') {
+                            // Se for criado um campo limpo, injeta o termo de Entrada como padrão
+                            termsArea.value = defaultTermEntry;
+
+                            // Se houver um campo de Tipo, monitora para trocar o termo dinamicamente
+                            if (typeInput) {
+                                typeInput.addEventListener('input', function() {
+                                    var val = this.value.toLowerCase();
+                                    if (val.includes('sai') || val.includes('out') || val.includes('exit')) {
+                                        termsArea.value = defaultTermExit;
+                                    } else {
+                                        termsArea.value = defaultTermEntry;
+                                    }
+                                });
+                            }
+                            isMuseumConfigInjected = true;
+                        }
+                    }
                 }
             } catch (e) {
-                // Ignora erros de bloqueio de origem enquanto o iframe carrega
+                // Ignora erros CORS enquanto carrega
             }
         }, 100);
     }
@@ -582,11 +624,5 @@ function generate_table($contenido, $first_post, $last_post, $show, $total_lines
     <?php if (isset($arrHttp["return"])) echo "<input type='hidden' name='return' value='" . $arrHttp["return"] . "'>\n"; ?>
     <?php if (isset($arrHttp["Expresion"])) echo "<input type='hidden' name='Expresion' value='" . urlencode($arrHttp["Expresion"]) . "'>\n"; ?>
 </form>
-
-
-
-
-
-
 
 <?php include("{$central_path}common/footer.php"); ?>

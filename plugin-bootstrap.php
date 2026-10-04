@@ -1,6 +1,8 @@
 <?php
 /*
  * Script: Museum Module Bootstrap
+ * Description: This script initializes the Museum module, registers it in the top navigation bar, and sets up event listeners for auditing location changes.
+ * Author: Roger Craveiro Guilherme
  */
 
 declare(strict_types=1);
@@ -9,7 +11,7 @@ namespace ABCD\Plugins\Museum;
 
 use ABCD\Common\LanguageManager;
 
-// Verificação de Instalação Silenciosa
+// Silent Installation Check
 $installLockFile = __DIR__ . '/.installed_lock';
 
 // 1. Register the module in the Top Navigation Bar

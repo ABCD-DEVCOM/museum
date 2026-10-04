@@ -1,0 +1,3 @@
+spec_receipts.*=%path_database%spec_receipts/data/spec_receipts.*
+prologoact.pft=%path_database%www/prologoact.pft
+epilogoact.pft=%path_database%www/epilogoact.pft

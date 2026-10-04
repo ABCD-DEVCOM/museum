@@ -1,11 +1,9 @@
 <?php
 /*
  * Script: Museum Receipt Print Endpoint
- * Description: Valida permissões e engatilha a geração do PDF via mPDF.
+ * Description: Valida permissões e engatilha a geração do PDF via mPDF embutido.
  */
-
 declare(strict_types=1);
-
 session_start();
 $central_path = "../../../../central/";
 
@@ -19,14 +17,24 @@ require_once("{$central_path}config_inc_check.php");
 require_once("{$central_path}config.php");
 include("{$central_path}common/get_post.php");
 
-// 2. Carregar Autoload do Composer (Requisito para o mPDF no ABCD v4)
-$autoloadPath = rtrim($ABCD_scripts_path, '/\\') . '/vendor/autoload.php';
-if (file_exists($autoloadPath)) {
-    require_once $autoloadPath;
+// 2. Carregar Autoload do mPDF (Isolado dentro do Plugin)
+// __DIR__ aponta para a pasta actions/. Subimos um nível para achar a pasta vendor/ do plugin.
+$pluginAutoload = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+if (file_exists($pluginAutoload)) {
+    require_once $pluginAutoload;
+} else {
+    // Fallback de segurança (caso o usuário tenha apagado a pasta vendor do plugin acidentalmente)
+    $globalAutoload = rtrim($ABCD_scripts_path, '/\\') . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+    if (file_exists($globalAutoload)) {
+        require_once $globalAutoload;
+    } else {
+        die("<div style='color:#d9534f; font-family:sans-serif; padding:20px;'>Erro Crítico: As dependências do plugin (mPDF) estão ausentes. Certifique-se de que a pasta 'vendor' foi extraída corretamente junto com o plugin.</div>");
+    }
 }
 
 // 3. Importar a classe geradora do plugin
-require_once '../src/Reports/ReceiptGenerator.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Reports' . DIRECTORY_SEPARATOR . 'ReceiptGenerator.php';
 
 // 4. Capturar e validar o MFN
 $mfn = $_REQUEST['Mfn'] ?? $_REQUEST['mfn'] ?? '';

@@ -1,12 +1,16 @@
-TAB||1 - InformaÃ§Ãµes do contrato|0|0||||||||||||0||0|0|||
-F|001|001 - ID do contrato|0|0|||X|||||||||1||0|0|||
-F|010|010 - Tipo de contrato (EmprÃ©stimo de entrada/saÃ­da/aquisiÃ§Ã£o)|0|0|||X|||||||||1||0|0|||
+TAB||1 - Informações do contrato|0|0||||||||||||0||0|0|||
+F|001|001 - ID do contrato|0|0|||AI||6|||||||1||0|0|||
+F|010|010 - Tipo de contrato|0|0|||S|1||P|type.tab|TYP_||||1||0|0|||
 F|020|020 - IDs de objetos associados (repetitivos)|0|1|||X|||||||||1||0|0|||
-F|030|030 - InstituiÃ§Ã£o/Pessoa Contraparte|0|0|||X|||||||||1||0|0|||
-TAB||2 - LogÃ­stica e Aspectos JurÃ­dicos|0|0||||||||||||0||0|0|||
-F|040|040 - Data de InÃ­cio do Contrato|0|0|||X|||||||||1||0|0|||
-F|050|050 - Data de tÃ©rmino do contrato|0|0|||X|||||||||0||0|0|||
-F|060|060 - Dados do seguro (^aApÃ³lice ^bValor ^cMoeda ^dEmpresa)|0|0|||X|||||||||0||0|0|||
-F|070|070 - CondiÃ§Ãµes de transporte|0|0|||X|3||||||||0||0|0|||
-F|080|080 - ReferÃªncia do relatÃ³rio de condiÃ§Ã£o|0|1|||X|||||||||0||0|0|||
-F|090|090 - Status da transferÃªncia de propriedade|0|0|||X|3||||||||0||0|0|||
+F|030|030 - Instituição/Pessoa Contraparte|0|0|||X|||||||||1||0|0|||
+TAB||2 - Logística e Aspectos Jurídicos|0|0||||||||||||0||0|0|||
+F|040|040 - Data de Início do Contrato|0|0|||X|||||||||1||0|0|||
+F|050|050 - Data de término do contrato|0|0|||X|||||||||0||0|0|||
+T|060|060 - Dados do seguro|0|0|abcd||X|||||||||0||0|0|||
+S||Apólice|0|0|a||X|||||||||0||0|0|||
+S||Valor|0|0|b||X|||||||||0||0|0|||
+S||Moeda|0|0|c||X|||||||||0||0|0|||
+S||Empresa|0|0|d||X|||||||||0||0|0|||
+F|070|070 - Condições de transporte|0|0|||X|3||||||||0||0|0|||
+F|080|080 - Referência do relatório de condição|0|1|||X|||||||||0||0|0|||
+F|090|090 - Status da transferência de propriedade|0|0|||X|3||||||||0||0|0|||

@@ -1,11 +1,14 @@
 TAB||1 - Receipt Information|0|0||||||||||||0||0|0|||
-F|001|001 - Receipt ID (Auto-generated)|0|0|||X|||||||||1||0|0|||
-F|010|010 - Procedure Type (Entry/Exit)|0|0|||X|||||||||1||0|0|||
-F|020|020 - Procedure Date (YYYY-MM-DD)|0|0|||X|||||||||1||0|0|||
-F|030|030 - Depositor / Owner Name|0|0|||X|||||||||1||0|0|||
-F|040|040 - Depositor Contact Info (^aEmail ^bPhone ^cAddress)|0|0|||X|||||||||1||0|0|||
-TAB||2 - Object Details & Terms|0|0||||||||||||0||0|0|||
-F|050|050 - Associated Object IDs (Spectrum 001 - Repetitive)|0|1|||X|||||||||1||0|0|||
+F|001|001 - Receipt ID|0|0|||AI||6|||||||1||0|0|||
+F|010|010 - Procedure Type (Entry/Exit)|0|0|||R|||P|proc_type.tab|PRC_||||1||0|0|||
+F|020|020 - Procedure Date (YYYY-MM-DD)|0|0|||ISO|||||||||1||0|0|||
+F|030|030 - Depositor / Owner Name|0|0|||X|||D|spec_receipts|NAM_|v030|||1||0|0|||
+T|040|040 - Depositor Contact Info|0|0|abc||X|||||||||1||0|0|||
+S||Email|0|0|a||X|||D|spec_receipts|EMAIL_|v040^a|||0||0|0|||
+S||Phone|0|0|b||X|||D|spec_receipts|PHO_|v040^b|||0||0|0|||
+S||Address|0|0|c||X|||D|spec_receipts|ADD_|v040^c|||0||0|0|||
+TAB||2 - Object Details - Terms|0|0||||||||||||0||0|0|||
+F|050|050 - Associated Object IDs (Spectrum 001 - Repetitive)|0|1|||X|||D|spectrum|CN_|v001|v001||1||0|0|||
 F|060|060 - Reason for Entry/Exit|0|0|||X|||||||||1||0|0|||
 F|070|070 - Terms of Responsibility / Conditions|0|0|||X|3||||||||1||0|0|||
 F|080|080 - Receiver/Issuer Staff Member|0|0|||X|||||||||1||0|0|||

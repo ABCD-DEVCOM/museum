@@ -1,12 +1,16 @@
-TAB||1 - Informaci贸n del acuerdo|0|0||||||||||||0||0|0|||
-F|001|001 - ID del acuerdo|0|0|||X|||||||||1||0|0|||
-F|010|010 - Tipo de acuerdo (Pr茅stamo de entrada/salida/adquisici贸n)|0|0|||X|||||||||1||0|0|||
-F|020|020 - ID de objetos asociados (repetitivos)|0|1|||X|||||||||1||0|0|||
-F|030|030 - Instituci贸n o persona contraparte|0|0|||X|||||||||1||0|0|||
-TAB||2 - Log铆stica y aspectos legales|0|0||||||||||||0||0|0|||
-F|040|040 - Fecha de inicio del acuerdo|0|0|||X|||||||||1||0|0|||
-F|050|050 - Fecha de finalizaci贸n del acuerdo|0|0|||X|||||||||0||0|0|||
-F|060|060 - Datos del seguro (^aP贸liza ^bValor ^cMoneda ^dCompa帽铆a)|0|0|||X|||||||||0||0|0|||
-F|070|070 - Condiciones de transporte|0|0|||X|3||||||||0||0|0|||
-F|080|080 - Referencia del informe de estado|0|1|||X|||||||||0||0|0|||
-F|090|090 - Estado de la transferencia de titularidad|0|0|||X|3||||||||0||0|0|||
+TAB||1 - Informaci髇 del Contrato|0|0||||||||||||0||0|0|||
+F|001|001 - ID del Contrato|0|0|||AI||6|||||||1||0|0|||
+F|010|010 - Tipo de Contrato|0|0|||S|1||P|type.tab|TYP_||||1||0|0|||
+F|020|020 - IDs de Objetos Asociados (Repetitivos)|0|1|||X|||||||||1||0|0|||
+F|030|030 - Instituci髇 / Persona Contraparte|0|0|||X|||||||||1||0|0|||
+TAB||2 - Log韘tica y Aspectos Legales|0|0||||||||||||0||0|0|||
+F|040|040 - Fecha de Inicio del Contrato|0|0|||X|||||||||1||0|0|||
+F|050|050 - Fecha de Finalizaci髇 del Contrato|0|0|||X|||||||||0||0|0|||
+T|060|060 - Datos del Seguro|0|0|abcd||X|||||||||0||0|0|||
+S||P髄iza|0|0|a||X|||||||||0||0|0|||
+S||Valor|0|0|b||X|||||||||0||0|0|||
+S||Moneda|0|0|c||X|||||||||0||0|0|||
+S||Compa耥a|0|0|d||X|||||||||0||0|0|||
+F|070|070 - Condiciones de Transporte|0|0|||X|3||||||||0||0|0|||
+F|080|080 - Referencia del Informe de Condici髇|0|1|||X|||||||||0||0|0|||
+F|090|090 - Estado de Transferencia de Propiedad|0|0|||X|3||||||||0||0|0|||

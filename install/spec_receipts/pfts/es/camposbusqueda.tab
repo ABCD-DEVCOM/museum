@@ -1,0 +1,8 @@
+ID del recibo|001|CNSR_|
+Tipo de procedimiento|010|TYP_|
+Nombre del depositante|030|NAM_|
+Correo electrónico|040|EMAIL_|
+Teléfono|040|PHO_|
+Dirección|040|ADD_|
+ID de los objetos asociados|050|OBJ_|
+Motivo de la entrada/salida|060|RF_|

@@ -9,36 +9,39 @@ use RuntimeException;
 
 /**
  * Class ReceiptGenerator
- * Fetches raw HTML formatted by CISIS PFTs and renders legal PDF receipts.
+ * Lê as configurações da instituição em museum.def e renderiza recibos legais em PDF.
  */
 class ReceiptGenerator
 {
-    /**
-     * Generates and streams a formal PDF receipt to the browser.
-     * @param string $receiptMfn The MFN of the receipt in spec_receipts
-     */
     public static function generateReceiptPdf(string $receiptMfn): void
     {
-        global $db_path, $xWxis, $Wxis, $wxisUrl, $postMethod, $cgibin_path, $meta_encoding, $server_url, $ABCD_scripts_path;
+        global $db_path, $xWxis, $wxisUrl, $postMethod, $cgibin_path, $meta_encoding, $server_url, $ABCD_scripts_path, $msgstr;
 
         if (!class_exists('\Mpdf\Mpdf')) {
             throw new RuntimeException("Missing mPDF library. Ensure Composer dependencies are installed in ABCD v4 (mpdf/mpdf).");
         }
 
-        // Language Persistence
-        $lang = $_SESSION['lang'] ?? 'pt'; // Fallback to PT if session is lost
+        // 1. Carrega as Configurações da Instituição
+        $configPath = rtrim($db_path, '/\\') . DIRECTORY_SEPARATOR . 'par' . DIRECTORY_SEPARATOR . 'museum.def';
+        $museumConfig = file_exists($configPath) ? parse_ini_file($configPath) : [];
 
-        $pftPath = $db_path . "spec_receipts/pfts/{$lang}/pdf_receipt_template.pft";
-        $cipar = $db_path . "par/spec_receipts.par";
+        $instName = $museumConfig['INSTITUTION_NAME'] ?? 'Official Museum';
+        $instId   = $museumConfig['INSTITUTION_ID'] ?? '';
+        $instAddr = $museumConfig['INSTITUTION_ADDRESS'] ?? '';
+        $logoUrl  = $museumConfig['LOGO_URL'] ?? '';
 
-        // Fallback to English PFT if translation template is missing
+        // 2. Busca os dados no CISIS
+        $lang = $_SESSION['lang'] ?? 'pt';
+        $pftPath = rtrim($db_path, '/\\') . "/spec_receipts/pfts/{$lang}/pdf_receipt_template.pft";
+        $cipar   = rtrim($db_path, '/\\') . "/par/spec_receipts.par";
+
         if (!file_exists($pftPath)) {
-            $pftPath = $db_path . "spec_receipts/pfts/en/pdf_receipt_template.pft";
+            $pftPath = rtrim($db_path, '/\\') . "/spec_receipts/pfts/en/pdf_receipt_template.pft";
         }
 
-        // Using Opcion=leer to fetch a direct MFN securely
-        $IsisScript = $xWxis . "buscar.xis";
-        $query = "&base=spec_receipts&cipar={$cipar}&Opcion=leer&Mfn={$receiptMfn}&Formato={$pftPath}";
+        $IsisScript = $xWxis . "imprime.xis";
+        $formato = urlencode("@" . $pftPath);
+        $query = "&base=spec_receipts&cipar={$cipar}&Opcion=rango&Mfn={$receiptMfn}&to={$receiptMfn}&Formato={$formato}";
 
         $wxis_llamar_path = rtrim($ABCD_scripts_path, '/\\') . "/central/common/wxis_llamar.php";
         if (file_exists($wxis_llamar_path)) {
@@ -47,35 +50,67 @@ class ReceiptGenerator
             throw new RuntimeException("wxis_llamar.php not found at {$wxis_llamar_path}");
         }
 
+        $contenido = array_filter($contenido, function ($linha) {
+            return trim($linha) !== '';
+        });
+
         if (empty($contenido) || (isset($err_wxis) && $err_wxis !== "")) {
-            throw new RuntimeException("CISIS Data Error: " . ($err_wxis ?? 'No data returned.'));
+            throw new RuntimeException("Falha ao ler o banco de dados. O CISIS não retornou dados para o MFN {$receiptMfn}.");
         }
 
         $rawHtmlContent = implode("\n", $contenido);
 
-        // Initialize mPDF
+        // 3. Inicializa o mPDF
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
             'margin_left' => 15,
             'margin_right' => 15,
-            'margin_top' => 20,
+            'margin_top' => 38,
             'margin_bottom' => 20,
             'autoScriptToLang' => true,
             'autoLangToFont' => true,
         ]);
 
-        $mpdf->SetHTMLHeader('<div style="text-align: right; border-bottom: 1px solid #000; padding-bottom: 5px; font-family: sans-serif;"><strong>Museum Receipt</strong></div>');
-        $mpdf->SetHTMLFooter('<div style="text-align: center; font-size: 10px; font-family: sans-serif;">Page {PAGENO} of {nbpg}</div>');
+        // 4. Constrói o Cabeçalho Dinâmico
+        $headerHtml = '<table width="100%" style="border-bottom: 2px solid #1a365d; padding-bottom: 10px; font-family: sans-serif; font-size: 11px;"><tr>';
 
-        // Inject specific print CSS (if available)
+        if (!empty($logoUrl)) {
+            $headerHtml .= '<td width="25%" style="text-align: left; vertical-align: middle;">';
+            $headerHtml .= '<img src="' . htmlspecialchars($logoUrl) . '" style="max-height: 70px; max-width: 180px;" />';
+            $headerHtml .= '</td><td width="75%" style="text-align: right; vertical-align: middle;">';
+        } else {
+            $headerHtml .= '<td width="100%" style="text-align: right; vertical-align: middle;">';
+        }
+
+        $headerHtml .= '<strong style="font-size: 16px; color: #1a365d;">' . htmlspecialchars($instName) . '</strong><br>';
+        if (!empty($instId))   $headerHtml .= '<strong>ID/Reg:</strong> ' . htmlspecialchars($instId) . '<br>';
+        if (!empty($instAddr)) $headerHtml .= htmlspecialchars($instAddr);
+        $headerHtml .= '</td></tr></table>';
+
+        $mpdf->SetHTMLHeader($headerHtml);
+
+        // 5. Tradução Blindada do Rodapé
+        $footerText = 'Página {PAGENO} de {nbpg}'; // Padrão PT e ES
+        if ($lang === 'en') {
+            $footerText = 'Page {PAGENO} of {nbpg}';
+        }
+        // Tenta sobrescrever com a chave do dicionário global, se ela existir
+        if (!empty($msgstr['museum_pdf_page'])) {
+            $footerText = $msgstr['museum_pdf_page'];
+        }
+
+        // Rodapé com as cores oficiais do ABCD (Fundo Azul Escuro, Texto Branco)
+        $mpdf->SetHTMLFooter('<div style="text-align: center; font-size: 10px; font-family: sans-serif; color: #1a365d;; padding: 8px 0;">' . htmlspecialchars($footerText) . '</div>');
+
+        // 6. Injeta o CSS oficial que acabamos de criar
         $cssPath = rtrim($ABCD_scripts_path, '/\\') . '/content/plugins/museum/assets/css/print_receipt.css';
         if (file_exists($cssPath)) {
             $mpdf->WriteHTML(file_get_contents($cssPath), \Mpdf\HTMLParserMode::HEADER_CSS);
         }
 
         $mpdf->WriteHTML($rawHtmlContent, \Mpdf\HTMLParserMode::HTML_BODY);
-        $mpdf->Output("Receipt_MFN{$receiptMfn}.pdf", \Mpdf\Output\Destination::INLINE);
+        $mpdf->Output("Museum_Receipt_MFN{$receiptMfn}.pdf", \Mpdf\Output\Destination::INLINE);
         exit;
     }
 }

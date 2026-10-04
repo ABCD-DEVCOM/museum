@@ -1,0 +1,8 @@
+Receipt ID|001|CNSR_|
+Procedure Type|010|TYP_|
+Depositor’s Name|030|NAM_|
+Email|040|EMAIL_|
+Telephone|040|PHO_|
+Address|040|ADD_|
+Associated Object IDs|050|OBJ_|
+Reason for Entry/Withdrawal|060|RF_|
