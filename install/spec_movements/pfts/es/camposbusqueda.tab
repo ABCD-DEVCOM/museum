@@ -1,0 +1,6 @@
+ID del registro de movimiento|001|CN_|
+ID del objeto de destino|010|IDS_|
+Fecha|020|DAT_|
+Ubicaci?n de origen|030|LO_|
+Ubicaci?n de destino|040|LD_|
+Manejado por|070|STF_|

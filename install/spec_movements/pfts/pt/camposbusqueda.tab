@@ -1,0 +1,6 @@
+ID do Log de Movimentação|001|CN_|
+ID do Objeto Alvo|010|IDS_|
+Localização de Origem|030|LO_|
+Data|020|DAT_|
+Localização de Destino|040|LD_|
+Manuseado Por|070|STF_|
