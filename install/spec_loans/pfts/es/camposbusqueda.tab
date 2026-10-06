@@ -1,0 +1,7 @@
+ID del contrato|001|CN_|
+Tipo de contrato|010|TYP_|
+IDs de objetos asociados|020|IDA_|
+Institución/Contraparte|030|INS_|
+Fecha de inicio del contrato|040|DIC_|
+Fecha de vencimiento del contrato|050|DTC_|
+Estado de la transferencia de propiedad|090|STA_|

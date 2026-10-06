@@ -1,0 +1,15 @@
+'<table border=0>'
+'<tbody style="font-family:arial;font-size:smaller;vertical-align:top" >'
+'<tr><th colspan=2>1 - Información del Contrato</th>'/
+if p(v001) then '<tr><th width=20%>001 - ID del Contrato</th><td>'v001+|<br>|,'</td>' fi/
+if p(v010) then '<tr><th width=20%>010 - Tipo de Contrato</th><td>'v010+|<br>|,'</td>' fi/
+if p(v020) then '<tr><th width=20%>020 - IDs de Objetos Asociados (Repetitivos)</th><td>'v020+|<br>|,'</td>' fi/
+if p(v030) then '<tr><th width=20%>030 - Institución / Persona Contraparte</th><td>'v030+|<br>|,'</td>' fi/
+'<tr><th colspan=2>2 - Logística y Aspectos Legales</th>'/
+if p(v040) then '<tr><th width=20%>040 - Fecha de Inicio del Contrato</th><td>'v040+|<br>|,'</td>' fi/
+if p(v050) then '<tr><th width=20%>050 - Fecha de Finalización del Contrato</th><td>'v050+|<br>|,'</td>' fi/
+if p(v060) then '<tr><th width=20%>060 - Datos del Seguro</th><td>'(| |v060^a||,| |v060^b||,| |v060^c||,| |v060^d||, if iocc<>nocc(v060) and p(v060) then '<br>' fi),'</td>' fi/
+if p(v070) then '<tr><th width=20%>070 - Condiciones de Transporte</th><td>'v070+|<br>|,'</td>' fi/
+if p(v080) then '<tr><th width=20%>080 - Referencia del Informe de Condición</th><td>'v080+|<br>|,'</td>' fi/
+if p(v090) then '<tr><th width=20%>090 - Estado de Transferencia de Propiedad</th><td>'v090+|<br>|,'</td>' fi/
+'</table>'

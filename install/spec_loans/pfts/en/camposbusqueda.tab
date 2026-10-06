@@ -1,0 +1,7 @@
+Contract ID|001|CN_|
+Contract type|010|TYP_|
+Associated object IDs|020|IDA_|
+Institution/Counterparty|030|INS_|
+Contract start date|040|DIC_|
+Contract end date|050|DTC_|
+Status of transfer of ownership|090|STA_|

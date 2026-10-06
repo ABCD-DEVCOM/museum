@@ -1,11 +1,11 @@
 TAB||1 - Informações do contrato|0|0||||||||||||0||0|0|||
 F|001|001 - ID do contrato|0|0|||AI||6|||||||1||0|0|||
 F|010|010 - Tipo de contrato|0|0|||S|1||P|type.tab|TYP_||||1||0|0|||
-F|020|020 - IDs de objetos associados (repetitivos)|0|1|||X|||||||||1||0|0|||
+F|020|020 - IDs de objetos associados (repetitivos)|0|1|||X|3||||||||1||0|0|||
 F|030|030 - Instituição/Pessoa Contraparte|0|0|||X|||||||||1||0|0|||
 TAB||2 - Logística e Aspectos Jurídicos|0|0||||||||||||0||0|0|||
-F|040|040 - Data de Início do Contrato|0|0|||X|||||||||1||0|0|||
-F|050|050 - Data de término do contrato|0|0|||X|||||||||0||0|0|||
+F|040|040 - Data de Início do Contrato|0|0|||D|||||||||1||0|0|||
+F|050|050 - Data de término do contrato|0|0|||D|||||||||0||0|0|||
 T|060|060 - Dados do seguro|0|0|abcd||X|||||||||0||0|0|||
 S||Apólice|0|0|a||X|||||||||0||0|0|||
 S||Valor|0|0|b||X|||||||||0||0|0|||
